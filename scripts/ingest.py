@@ -1,3 +1,4 @@
+from logger import setup_logger
 import pandas as pd
 from pathlib import Path
 
@@ -9,6 +10,7 @@ def extract_data():
         "filename.csv": dataframe
     }
     """
+    logger = setup_logger()
 
     project_root = Path(__file__).resolve().parent.parent
     raw_data_path = project_root / "data" / "raw"
@@ -18,7 +20,15 @@ def extract_data():
     dataframes = {}
 
     for file in csv_files:
+
+        logger.info(f"Reading file: {file.name}")
+
         df = pd.read_csv(file)
+
+        logger.info(
+            f"Loaded {file.name} with {df.shape[0]} rows and {df.shape[1]} columns"
+        )
+
         dataframes[file.name] = df
 
     return dataframes

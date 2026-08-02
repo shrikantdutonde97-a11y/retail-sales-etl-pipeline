@@ -1,25 +1,24 @@
+from logger import setup_logger
+
 def validate_data(dataframes):
     """
     Validate each DataFrame in the dictionary.
     """
+    logger = setup_logger()
 
     for filename, df in dataframes.items():
 
-        print(f"\n{'='*50}")
-        print(f"Validating: {filename}")
-        print(f"{'='*50}")
+        logger.info("=" * 50)
+        logger.info(f"Validating: {filename}")
+        logger.info("=" * 50)
 
-        print("\nColumn Names:")
-        print(df.columns.tolist())
+        logger.info(f"Column Names: {df.columns.tolist()}")
 
-        print("\nData Types:")
-        print(df.dtypes)
+        logger.info(f"\nData Types:\n{df.dtypes}")
 
-        print("\nMissing Values:")
-        print(df.isnull().sum())
+        logger.info(f"\nMissing Values:\n{df.isnull().sum()}")
 
-        print("\nDuplicate Rows:")
-        print(df.duplicated().sum())
+        logger.info(f"Duplicate Rows: {df.duplicated().sum()}")
 
 from ingest import extract_data
 
