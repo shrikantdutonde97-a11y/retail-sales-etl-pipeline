@@ -1,16 +1,18 @@
+from logger import setup_logger
 import pandas as pd
 
 def transform_data(dataframes):
     """
     Apply transformations to each DataFrame.
     """
-
+    logger = setup_logger()
+    
     for filename, df in dataframes.items():
 
         # Convert Date column to datetime
         df["Date"] = pd.to_datetime(df["Date"])
 
-        print(f"\nTransformation completed for: {filename}")
+        logger.info(f"\nTransformation completed for: {filename}")
 
     return dataframes
 

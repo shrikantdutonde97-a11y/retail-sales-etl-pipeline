@@ -1,9 +1,11 @@
+from logger import setup_logger
 from pathlib import Path
 
 def load_data(dataframes):
     """
     Save transformed DataFrames to the processed folder.
     """
+    logger = setup_logger()
 
     project_root = Path(__file__).resolve().parent.parent
     processed_path = project_root / "data" / "processed"
@@ -14,7 +16,7 @@ def load_data(dataframes):
 
         df.to_csv(output_file, index=False)
 
-        print(f"Saved: {output_file}")
+        logger.info(f"Saved: {output_file}")
 
 
 from ingest import extract_data
