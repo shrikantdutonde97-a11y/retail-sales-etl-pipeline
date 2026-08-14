@@ -13,7 +13,13 @@ def main():
 
     data = extract_data()
 
-    validate_data(data)
+    # Validate the data
+    validation_result = validate_data(data)
+
+    # Stop pipeline if validation fails
+    if not validation_result:
+        logger.error("Validation failed. ETL Pipeline stopped.")
+        return
 
     transformed_data = transform_data(data)
 

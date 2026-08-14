@@ -3,13 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 def extract_data():
-    """
-    Read all CSV files from the raw folder.
-    Returns a dictionary:
-    {
-        "filename.csv": dataframe
-    }
-    """
+
     logger = setup_logger()
 
     project_root = Path(__file__).resolve().parent.parent
@@ -23,13 +17,17 @@ def extract_data():
 
         logger.info(f"Reading file: {file.name}")
 
-        df = pd.read_csv(file)
+        try:
+            df = pd.read_csv(file)
 
-        logger.info(
-            f"Loaded {file.name} with {df.shape[0]} rows and {df.shape[1]} columns"
-        )
+            logger.info(
+                f"Loaded {file.name} with {df.shape[0]} rows and {df.shape[1]} columns"
+            )
 
-        dataframes[file.name] = df
+            dataframes[file.name] = df
+
+        except Exception as e:
+            logger.error(f"Failed to read {file.name}: {e}")
 
     return dataframes
 
