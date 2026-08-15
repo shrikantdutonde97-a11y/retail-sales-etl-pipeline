@@ -10,13 +10,25 @@ def load_data(dataframes):
     project_root = Path(__file__).resolve().parent.parent
     processed_path = project_root / "data" / "processed"
 
+    # Create processed folder if it does not exist
+    processed_path.mkdir(parents=True, exist_ok=True)
+
     for filename, df in dataframes.items():
 
         output_file = processed_path / filename
 
-        df.to_csv(output_file, index=False)
+        try:
+            df.to_csv(output_file, index=False)
 
-        logger.info(f"Saved: {output_file}")
+            logger.info(
+                f"Saved {filename} with {df.shape[0]} rows "
+                f"to {output_file}"
+            )
+
+        except Exception as e:
+            logger.error(
+                f"Failed to save {filename}: {e}"
+            )
 
 
 from ingest import extract_data
