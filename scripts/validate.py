@@ -9,7 +9,29 @@ def validate_data(dataframes):
     otherwise returns False.
     """
 
-    logger = setup_logger()
+    logger = setup_logger() 
+
+    expected_columns = [
+    "Transaction ID",
+    "Date",
+    "Customer ID",
+    "Gender",
+    "Age",
+    "Product Category",
+    "Quantity",
+    "Price per Unit",
+    "Total Amount"
+]
+    expected_dtypes = {
+    "Transaction ID": "int64",
+    "Customer ID": "object",
+    "Gender": "object",
+    "Age": "int64",
+    "Product Category": "object",
+    "Quantity": "int64",
+    "Price per Unit": "int64",
+    "Total Amount": "int64"
+}
 
     # IMPORTANT: This must be BEFORE the for loop
     validation_passed = True
@@ -21,9 +43,47 @@ def validate_data(dataframes):
         logger.info("=" * 50)
 
         try:
-            logger.info(f"Column Names: {df.columns.tolist()}")
+            logger.info(f"Column Names: {df.columns.tolist()}") 
+
+            missing_columns = set(expected_columns) - set(df.columns)
+            extra_columns = set(df.columns) - set(expected_columns)
+
+            if missing_columns:
+                logger.warning(
+                f"Missing columns in {filename}: {missing_columns}"
+                )
+                validation_passed = False
+
+            if extra_columns:
+                logger.warning(
+                f"Unexpected columns in {filename}: {extra_columns}"
+                )
+                validation_passed = False
+
+            if not missing_columns and not extra_columns:
+                logger.info(f"Schema check PASSED for {filename}")
 
             logger.info(f"\nData Types:\n{df.dtypes}")
+
+            # Data type validation
+            for column, expected_type in expected_dtypes.items():
+
+                if column in df.columns:
+
+                    actual_type = str(df[column].dtype)
+
+                    if actual_type == expected_type:
+                        logger.info(
+                            f"Data type check PASSED: {column} -> {actual_type}"
+                        )
+                    else:
+                        logger.warning(
+                            f"Data type check FAILED: {column} -> "
+                            f"Expected: {expected_type}, "
+                            f"Found: {actual_type}"
+                        )
+
+                        validation_passed = False
 
             logger.info(f"\nMissing Values:\n{df.isnull().sum()}")
 
