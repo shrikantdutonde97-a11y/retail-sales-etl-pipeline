@@ -1,15 +1,16 @@
 from logger import setup_logger
 import pandas as pd
 from pathlib import Path
+from config import RAW_DATA_PATH
 
 def extract_data():
 
     logger = setup_logger()
 
-    project_root = Path(__file__).resolve().parent.parent
-    raw_data_path = project_root / "data" / "raw"
+    #project_root = Path(__file__).resolve().parent.parent
+    #raw_data_path = project_root / "data" / "raw"
 
-    csv_files = list(raw_data_path.glob("*.csv"))
+    csv_files = list(RAW_DATA_PATH.glob("*.csv"))
 
     dataframes = {}
 
