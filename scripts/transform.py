@@ -15,7 +15,18 @@ def transform_data(dataframes):
             # Convert Date column to datetime
             df["Date"] = pd.to_datetime(df["Date"])
 
-                        # Check Total Amount calculation
+            # Create date-based columns
+            df["Year"] = df["Date"].dt.year
+            df["Month"] = df["Date"].dt.month
+            df["Month Name"] = df["Date"].dt.month_name()
+            df["Day"] = df["Date"].dt.day
+            df["Day of Week"] = df["Date"].dt.day_name()
+
+            logger.info(
+                f"Date-based columns created for {filename}"
+            )
+
+            # Check Total Amount calculation
             calculated_amount = (
                 df["Quantity"] * df["Price per Unit"]
             )
@@ -53,5 +64,8 @@ if __name__ == "__main__":
     transformed_data = transform_data(data)
 
     for filename, df in transformed_data.items():
+        print("\nFirst 5 Rows:")
+        print(df.head())
+        
         print("\nData Types:")
         print(df.dtypes)    
